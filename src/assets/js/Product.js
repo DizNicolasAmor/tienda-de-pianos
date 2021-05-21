@@ -1,21 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { truncateString } from './utils';
 
-
-class Product extends Component {
-  render() {
-    return (
-      <div className="subcontainer">
-        <div className="product-container">
-          <h1>
-            <img src={this.props.image} alt="Producto" />
-          </h1>
-          <hr />
-          <h4 className="cursor-pointer">$ {this.props.price}</h4>  
-          <h5>{this.props.title}</h5>
-        </div>
+const Product = ({ image, price, title }) => (
+  <div className="subcontainer">
+    <div className="product-container">
+      <div className="product-container-image-wrapper">
+        <img src={image} alt="Producto" />
       </div>
-    );
-  }
-}
+      <hr />
+      <div className="cursor-pointer text-center font-weight-bold my-3">
+        $ {price}
+      </div>
+      <div title={title}>{truncateString(title, 60)}</div>
+    </div>
+  </div>
+);
 
 export default Product;
