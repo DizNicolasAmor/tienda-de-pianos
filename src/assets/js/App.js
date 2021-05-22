@@ -45,26 +45,15 @@ class App extends Component {
       });
   }
 
-  //sort products
   sortRelevancia(){
-    //NOTE: 
-      //There is no prop in 'products' that allows me to sort by Relevancia.
-      //The array comes with that order from the first axios call. 
-      //So this is what I do: 
-      //  I filter the original array with the current products (I use the property 'id'). 
-
     let productsBackupAux = JSON.parse(JSON.stringify(this.state.productsBackupPorRelevancia)),
         productsAux = JSON.parse(JSON.stringify(this.state.products));
-
     let currentProductsIds = [];
 
     productsAux.forEach( (product) => {
       currentProductsIds.push(product.id);
     });
-
-    let porRelevancia = function(product){
-      return currentProductsIds.indexOf(product.id) !== -1;
-    };
+    let porRelevancia = product => currentProductsIds.indexOf(product.id) !== -1;
 
     productsBackupAux = productsBackupAux.filter(porRelevancia);
 
@@ -76,13 +65,13 @@ class App extends Component {
   }
 
   sortMenorPrecio(){
-    let menorPrecio = function(a,b) {
+    const menorPrecio = function(a,b) {
       if (a.price < b.price)  return -1;
       if (a.price > b.price)  return 1;
       return 0;
     }
-    let productsBackupAux = JSON.parse(JSON.stringify(this.state.productsBackup)),
-        productsAux = JSON.parse(JSON.stringify(this.state.products));
+    let productsBackupAux = JSON.parse(JSON.stringify(this.state.productsBackup));
+    let productsAux = JSON.parse(JSON.stringify(this.state.products));
 
     productsBackupAux.sort(menorPrecio);
     productsAux.sort(menorPrecio);
@@ -95,7 +84,7 @@ class App extends Component {
   }
 
   sortMayorPrecio(){
-    let mayorPrecio = function(a,b) {
+    const mayorPrecio = function(a,b) {
       if (a.price > b.price)  return -1;
       if (a.price < b.price)  return 1;
       return 0;
@@ -122,7 +111,6 @@ class App extends Component {
 
         updatedProducts = JSON.parse(JSON.stringify(this.state.productsBackup));
 
-    //filter functions
     let porPalabraClave = function(product){
           return product.title.toLowerCase()
                   .search( palabraClave.toLowerCase() ) !== -1;
