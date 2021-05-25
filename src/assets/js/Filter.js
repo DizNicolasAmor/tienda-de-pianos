@@ -1,64 +1,95 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Button} from 'react-bootstrap';
 
-class Filter extends Component {
-  render(){
-    return (
-      <div id="filter">
-        <h4>Ordenar por:</h4>
-        <h4>
-          <Button bsStyle={this.props.criteria === 'relevancia' ? 
-                              "info" : "default"} 
-                  className="btn-sort"
-                  onClick={this.props.sortRelevancia}
-                    >Relevancia</Button>
-          <Button bsStyle={this.props.criteria === 'menor-precio' ? 
-                              "info" : "default"} 
-                  className="btn-sort"
-                  onClick={this.props.sortMenorPrecio}
-                    >Menor precio</Button>
-          <Button bsStyle={this.props.criteria === 'mayor-precio' ? 
-                              "info" : "default"}
-                  className="btn-sort"
-                  onClick={this.props.sortMayorPrecio}
-                  >Mayor precio</Button>
-        </h4>
-        <h4 id="filtrar-por">Filtrar por:</h4>
+const Filter = ({
+	clickNuevo,
+	clickUsado,
+	criteria,
+	filterAll,
+	nuevoVsUsado,
+	sortRelevancia,
+	sortMenorPrecio,
+	sortMayorPrecio
+}) => (
+	<div id="filter">
+		<div>Ordenar por:</div>
+		<div>
+			<Button
+				aria-label="Ordenar por Relevancia"
+				bsStyle={criteria === 'relevancia' ? "info" : "default"}
+				className="btn-sort"
+				onClick={sortRelevancia}
+			>
+				Relevancia
+			</Button>
+			<Button
+				aria-label="Ordenar por Menor precio"
+				bsStyle={criteria === 'menor-precio' ? "info" : "default"}
+				className="btn-sort"
+				onClick={sortMenorPrecio}
+			>
+				Menor precio
+			</Button>
+			<Button
+				aria-label="Ordenar por Mayor precio"
+				bsStyle={criteria === 'mayor-precio' ? "info" : "default"}
+				className="btn-sort"
+				onClick={sortMayorPrecio}
+			>
+				Mayor precio
+			</Button>
+		</div>
 
-        <br /> <h5 className="filter-text">Palabra clave</h5>
-        <br /> <input type="string" 
-                className="form-control" 
-                id="palabra-clave"
-                onChange={ this.props.filterAll } />
+		<fieldset>
+			<legend>Filtros</legend>
+			<label className="filter-text my-4" htmlFor="palabra-clave">
+				Filtrar por palabra clave:
+			</label>
+			<input
+				type="string"
+				className="form-control"
+				id="palabra-clave"
+				onChange={filterAll}
+			/>
+			<label className="filter-text my-4" htmlFor="precio-base">
+				Filtrar por precio mayor a $
+			</label>
+			<input
+				type="number"
+				className="form-control"
+				id="precio-base"
+				onChange={filterAll}
+			/>
+			<label className="filter-text my-4" htmlFor="precio-tope">
+				Filtrar por precio menor a $
+			</label>
+			<input
+				type="number"
+				className="form-control"
+				id="precio-tope"
+				onChange={filterAll}
+			/>
 
-        <br /> <h5 className="filter-text">Precio mayor a $ </h5>
-        <br /> <input type="number" 
-                className="form-control" 
-                id="precio-base"
-                onChange={ this.props.filterAll }/>
-
-        <br /> <h5 className="filter-text">Precio menor a $ </h5>
-        <br /> <input type="number" 
-                className="form-control"
-                id="precio-tope"
-                onChange={ this.props.filterAll } />
-
-        <br />
-        <h4>
-          <Button bsStyle={this.props.nuevoVsUsado === 'new' ? 
-                              "info" : "default"}
-                  className="btn-sort"
-                  onClick={ this.props.clickNuevo }
-                  >Nuevo</Button>
-          <Button bsStyle={this.props.nuevoVsUsado === 'used' ? 
-                              "info" : "default"}
-                  className="btn-sort"
-                  onClick={ this.props.clickUsado }
-                  >Usado</Button>
-        </h4>
-      </div>
-      );
-  }
-}
+			<div className="m-4 text-center">
+				<Button
+					aria-label="Filtrar por producto Nuevo"
+					bsStyle={nuevoVsUsado === 'new' ? "info" : "default"}
+					className="btn-sort"
+					onClick={clickNuevo}
+				>
+					Nuevo
+				</Button>
+				<Button
+					aria-label="Filtrar por producto Usado"
+					bsStyle={nuevoVsUsado === 'used' ? "info" : "default"}
+					className="btn-sort"
+					onClick={clickUsado}
+				>
+					Usado
+				</Button>
+			</div>
+		</fieldset>
+	</div>
+);
 
 export default Filter;
