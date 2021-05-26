@@ -12,42 +12,42 @@ const Filter = ({
 	sortMayorPrecio
 }) => (
 	<div id="filter">
-		<div>Ordenar por:</div>
-		<div>
+		<div className="h5 my-2">Ordenar por:</div>
+		<div className="text-center">
 			<Button
 				aria-label="Ordenar por Relevancia"
-				bsStyle={criteria === 'relevancia' ? "info" : "default"}
+				bsStyle={criteria === 'relevancia' ? "info" : "light"}
 				className="btn-sort"
 				onClick={sortRelevancia}
 			>
-				Relevancia
+				RELEVANCIA
 			</Button>
 			<Button
 				aria-label="Ordenar por Menor precio"
-				bsStyle={criteria === 'menor-precio' ? "info" : "default"}
+				bsStyle={criteria === 'menor-precio' ? "info" : "light"}
 				className="btn-sort"
 				onClick={sortMenorPrecio}
 			>
-				Menor precio
+				MENOR PRECIO
 			</Button>
 			<Button
 				aria-label="Ordenar por Mayor precio"
-				bsStyle={criteria === 'mayor-precio' ? "info" : "default"}
+				bsStyle={criteria === 'mayor-precio' ? "info" : "light"}
 				className="btn-sort"
 				onClick={sortMayorPrecio}
 			>
-				Mayor precio
+				MAYOR PRECIO
 			</Button>
 		</div>
 
 		<fieldset>
-			<legend>Filtros</legend>
+			<legend className="h5 my-2">Filtros</legend>
 			<label className="filter-text my-4" htmlFor="palabra-clave">
 				Filtrar por palabra clave:
 			</label>
 			<input
 				type="string"
-				className="form-control"
+				className="form-control border border-light"
 				id="palabra-clave"
 				onChange={filterAll}
 			/>
@@ -56,7 +56,7 @@ const Filter = ({
 			</label>
 			<input
 				type="number"
-				className="form-control"
+				className="form-control border border-light"
 				id="precio-base"
 				onChange={filterAll}
 			/>
@@ -65,7 +65,7 @@ const Filter = ({
 			</label>
 			<input
 				type="number"
-				className="form-control"
+				className="form-control border border-light"
 				id="precio-tope"
 				onChange={filterAll}
 			/>
@@ -73,19 +73,19 @@ const Filter = ({
 			<div className="m-4 text-center">
 				<Button
 					aria-label="Filtrar por producto Nuevo"
-					bsStyle={nuevoVsUsado === 'new' ? "info" : "default"}
+					bsStyle={nuevoVsUsado === 'new' ? "info" : "light"}
 					className="btn-sort"
 					onClick={clickNuevo}
 				>
-					Nuevo
+					NUEVO
 				</Button>
 				<Button
 					aria-label="Filtrar por producto Usado"
-					bsStyle={nuevoVsUsado === 'used' ? "info" : "default"}
+					bsStyle={nuevoVsUsado === 'used' ? "info" : "light"}
 					className="btn-sort"
 					onClick={clickUsado}
 				>
-					Usado
+					USADO
 				</Button>
 			</div>
 		</fieldset>
