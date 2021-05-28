@@ -2,7 +2,7 @@ import React from 'react';
 import Product from './Product.js';
 
 const Products = ({ products }) => (
-	<div id="products">
+	<section aria-label="Productos" id="products">
 		{products.map( (product, index) => (
 			<Product
 				key={index}
@@ -11,7 +11,7 @@ const Products = ({ products }) => (
 				price={product.price}
 				id={index + 1} />
 		))}
-	</div>
+	</section>
 );
 
 export default Products;

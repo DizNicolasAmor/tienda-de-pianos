@@ -11,7 +11,7 @@ const Filter = ({
 	sortMenorPrecio,
 	sortMayorPrecio
 }) => (
-	<div id="filter">
+	<section aria-label="Filtros" id="filter">
 		<div className="h5 my-2">Ordenar por:</div>
 		<div className="text-center">
 			<Button
@@ -89,7 +89,7 @@ const Filter = ({
 				</Button>
 			</div>
 		</fieldset>
-	</div>
+	</section>
 );
 
 export default Filter;
