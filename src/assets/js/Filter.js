@@ -73,7 +73,7 @@ const Filter = ({
 			<div className="m-4 text-center">
 				<Button
 					aria-label="Filtrar por producto Nuevo"
-					bsStyle={nuevoVsUsado === 'new' ? "info" : "light"}
+					bsStyle={nuevoVsUsado === 'nuevo' ? "info" : "light"}
 					className="btn-sort"
 					onClick={clickNuevo}
 				>
@@ -81,7 +81,7 @@ const Filter = ({
 				</Button>
 				<Button
 					aria-label="Filtrar por producto Usado"
-					bsStyle={nuevoVsUsado === 'used' ? "info" : "light"}
+					bsStyle={nuevoVsUsado === 'usado' ? "info" : "light"}
 					className="btn-sort"
 					onClick={clickUsado}
 				>

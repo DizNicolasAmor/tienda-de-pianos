@@ -7,43 +7,35 @@ import Footer from './Footer.js';
 
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      products: [], 
-      productsBackup: [],
-      productsBackupPorRelevancia: [],
-      criteria: 'relevancia',
-      nuevoVsUsado: ''
-    };
+	constructor(props) {
+		super(props);
+		this.state = {
+			products: [],
+			productsBackup: [],
+			productsBackupPorRelevancia: [],
+			criteria: 'relevancia',
+			nuevoVsUsado: ''
+		};
 
-    this.getData = this.getData.bind(this);
-    this.sortRelevancia = this.sortRelevancia.bind(this);
-    this.sortMenorPrecio = this.sortMenorPrecio.bind(this);
-    this.sortMayorPrecio = this.sortMayorPrecio.bind(this);
-    this.filterAll = this.filterAll.bind(this);
-    this.clickNuevo=this.clickNuevo.bind(this);
-    this.clickUsado=this.clickUsado.bind(this);
+		this.sortRelevancia = this.sortRelevancia.bind(this);
+		this.sortMenorPrecio = this.sortMenorPrecio.bind(this);
+		this.sortMayorPrecio = this.sortMayorPrecio.bind(this);
+		this.filterAll = this.filterAll.bind(this);
   }
 
-  getData(){
-    let self = this;
-
-    axios.get('https://api.mercadolibre.com/sites/MLA/search?category=MLA26960')
-      .then(function (response) {
-        console.log('PRODUCTS:');
-        console.log(response.data.results);
-        self.setState({
-          products: response.data.results,
-          productsBackup: response.data.results,
-          productsBackupPorRelevancia: response.data.results,
-          criteria: 'relevancia'
-        });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
+	getData = () => {
+		const url = 'https://api.mercadolibre.com/sites/MLA/search?category=MLA26960';
+		axios.get(url)
+			.then(response => {
+				this.setState({
+					products: response.data.results,
+					productsBackup: response.data.results,
+					productsBackupPorRelevancia: response.data.results,
+					criteria: 'relevancia'
+				});
+			})
+			.catch(console.error);
+	}
 
   sortRelevancia(){
     let productsBackupAux = JSON.parse(JSON.stringify(this.state.productsBackupPorRelevancia)),
@@ -102,7 +94,6 @@ class App extends Component {
     });
   }
 
-  //filter
   filterAll(){
     let palabraClave = document.getElementById('palabra-clave').value,
         precioBase = document.getElementById('precio-base').value,
@@ -157,55 +148,36 @@ class App extends Component {
     });
   }
 
-  clickNuevo(){
-    if(this.state.nuevoVsUsado === 'new'){
-      this.setState({ nuevoVsUsado: '' }, () => {
-            this.filterAll();   //it is a callback
-      });
-    }
-    else{
-      this.setState({ nuevoVsUsado: 'new' }, () => {
-            this.filterAll();
-      });      
-    }
-  }
-  clickUsado(){
-    if(this.state.nuevoVsUsado === 'used'){
-      this.setState({ nuevoVsUsado: '' }, () => {
-            this.filterAll();
-      });
-    }
-    else{
-      this.setState({ nuevoVsUsado: 'used' }, () => {
-            this.filterAll();
-      });
-    }
-  }
+	clickNuevoVsUsado = str => {
+		const { nuevoVsUsado } = this.state;
+		const nuevoEstado = nuevoVsUsado === str ? '' : str;
+		this.setState({ nuevoVsUsado: nuevoEstado }, () => { this.filterAll() });
+	}
 
-  //start
-  componentDidMount(){
-    this.getData();
-  }
+	componentDidMount(){
+		this.getData();
+	}
   
-  render() {
-    return (
-      <div>
-        <div className="grid">
-          <Header />
-          <Filter criteria={this.state.criteria}
-                  sortRelevancia={this.sortRelevancia}
-                  sortMenorPrecio={this.sortMenorPrecio}
-                  sortMayorPrecio={this.sortMayorPrecio}
-                  filterAll={this.filterAll}
-                  nuevoVsUsado={this.state.nuevoVsUsado}
-                  clickNuevo={this.clickNuevo}
-                  clickUsado={this.clickUsado}
-                  />
-          <Products products={this.state.products} />
-          <Footer />
-        </div>
-      </div>
-    );
+	render() {
+		return (
+			<div>
+				<div className="grid">
+					<Header />
+					<Filter
+						criteria={this.state.criteria}
+						sortRelevancia={this.sortRelevancia}
+						sortMenorPrecio={this.sortMenorPrecio}
+						sortMayorPrecio={this.sortMayorPrecio}
+						filterAll={this.filterAll}
+						nuevoVsUsado={this.state.nuevoVsUsado}
+						clickNuevo={() => this.clickNuevoVsUsado('nuevo')}
+						clickUsado={() => this.clickNuevoVsUsado('usado')}
+					/>
+					<Products products={this.state.products} />
+					<Footer />
+				</div>
+			</div>
+		);
   }
 }
 
