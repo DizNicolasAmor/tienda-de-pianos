@@ -20,7 +20,6 @@ class App extends Component {
 		this.sortRelevancia = this.sortRelevancia.bind(this);
 		this.sortMenorPrecio = this.sortMenorPrecio.bind(this);
 		this.sortMayorPrecio = this.sortMayorPrecio.bind(this);
-		this.filterAll = this.filterAll.bind(this);
   }
 
 	getData = () => {
@@ -94,59 +93,36 @@ class App extends Component {
     });
   }
 
-  filterAll(){
-    let palabraClave = document.getElementById('palabra-clave').value,
-        precioBase = document.getElementById('precio-base').value,
-        precioTope = document.getElementById('precio-tope').value, 
-        nuevoVsUsado = this.state.nuevoVsUsado,
+	filterAll = () => {
+		const { nuevoVsUsado, productsBackup } = this.state;
+		const precioBase = document.getElementById('precio-base').value;
+		const precioTope = document.getElementById('precio-tope').value; 
+		let palabraClave = document.getElementById('palabra-clave').value;
 
-        updatedProducts = JSON.parse(JSON.stringify(this.state.productsBackup));
+		const porPalabraClave = product => product.title.toLowerCase().search(palabraClave.toLowerCase()) !== -1;
+		const porPrecioBase = product => product.price > parseFloat(precioBase);
+		const porPrecioTope = product => product.price < parseFloat(precioTope);
+		const porNuevoVsUsado = product => product.condition === nuevoVsUsado;
+		let updatedProducts = JSON.parse(JSON.stringify(productsBackup));
 
-    let porPalabraClave = function(product){
-          return product.title.toLowerCase()
-                  .search( palabraClave.toLowerCase() ) !== -1;
-        },
-        porPrecioBase = function(product){
-          return product.price > parseFloat(precioBase);   //remember that precioBase is a string
-        }, 
-        porPrecioTope = function(product){
-          return product.price < parseFloat(precioTope);   //remember that precioTope is a string
-        }, 
-        porNuevoVsUsado = function(product){
-          return product.condition === nuevoVsUsado;
-        };
+		if(palabraClave){
+			const palabraClaveBackup = palabraClave;
+			let cadaPalabraClave = palabraClave.split(' ');
 
-    //check and update all filters
-    if(palabraClave !== ''){
-      //Maybe the user writes more than one word. 
-      let cadaPalabraClave = palabraClave.split(' '), 
-          palabraClaveBackup = palabraClave;
+			cadaPalabraClave.forEach(cadaPalabra => {
+				palabraClave = cadaPalabra;
+				updatedProducts = updatedProducts.filter(porPalabraClave);
+			});
 
-      //I want to filter each of the words regardless of the order. 
-      cadaPalabraClave.forEach( (cadaPalabra) => {
-        palabraClave = cadaPalabra;
-        updatedProducts = updatedProducts.filter( porPalabraClave );
-      });
+			palabraClave = palabraClaveBackup;
+		}
 
-      palabraClave = palabraClaveBackup;
-    }
+		if(precioBase){ updatedProducts = updatedProducts.filter(porPrecioBase) }
+		if(precioTope){ updatedProducts = updatedProducts.filter(porPrecioTope) }
+		if(nuevoVsUsado){ updatedProducts = updatedProducts.filter(porNuevoVsUsado) }
 
-    if(precioBase !== ''){
-        updatedProducts = updatedProducts.filter( porPrecioBase );
-    }
-
-    if(precioTope !== ''){
-        updatedProducts = updatedProducts.filter( porPrecioTope );
-    }
-
-    if(nuevoVsUsado !== ''){
-        updatedProducts = updatedProducts.filter( porNuevoVsUsado );
-    }
-
-    this.setState({
-      products: updatedProducts
-    });
-  }
+		this.setState({ products: updatedProducts });
+	}
 
 	clickNuevoVsUsado = str => {
 		const { nuevoVsUsado } = this.state;
