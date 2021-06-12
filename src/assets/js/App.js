@@ -4,7 +4,7 @@ import Header from './Header.js';
 import Filter from './Filter.js';
 import Products from './Products.js';
 import Footer from './Footer.js';
-
+import { copyProducts } from './utils';
 
 class App extends Component {
 	constructor(props) {
@@ -16,11 +16,7 @@ class App extends Component {
 			criteria: 'relevancia',
 			nuevoVsUsado: ''
 		};
-
-		this.sortRelevancia = this.sortRelevancia.bind(this);
-		this.sortMenorPrecio = this.sortMenorPrecio.bind(this);
-		this.sortMayorPrecio = this.sortMayorPrecio.bind(this);
-  }
+	}
 
 	getData = () => {
 		const url = 'https://api.mercadolibre.com/sites/MLA/search?category=MLA26960';
@@ -36,62 +32,64 @@ class App extends Component {
 			.catch(console.error);
 	}
 
-  sortRelevancia(){
-    let productsBackupAux = JSON.parse(JSON.stringify(this.state.productsBackupPorRelevancia)),
-        productsAux = JSON.parse(JSON.stringify(this.state.products));
-    let currentProductsIds = [];
+	sortRelevancia = () => {
+		const {
+			productsBackupPorRelevancia,
+			products
+		} = this.state;
+		const porRelevancia = product => currentProductsIds.indexOf(product.id) !== -1;
+		let productsBackupAux = copyProducts(productsBackupPorRelevancia);
+		let productsAux = copyProducts(products);
+		let currentProductsIds = [];
 
-    productsAux.forEach( (product) => {
-      currentProductsIds.push(product.id);
-    });
-    let porRelevancia = product => currentProductsIds.indexOf(product.id) !== -1;
+		productsAux.forEach( (product) => { currentProductsIds.push(product.id) });
+		productsBackupAux = productsBackupAux.filter(porRelevancia);
+		this.setState({
+			products: productsBackupAux,
+			productsBackup: copyProducts(productsBackupPorRelevancia),
+			criteria: 'relevancia'
+		});
+	}
 
-    productsBackupAux = productsBackupAux.filter(porRelevancia);
+	sortMenorPrecio = () => {
+		const { productsBackup, products } = this.state;
+		const menorPrecio = function(a,b) {
+			if (a.price < b.price)  return -1;
+			if (a.price > b.price)  return 1;
+			return 0;
+		}
+		let productsBackupAux = copyProducts(productsBackup);
+		let productsAux = copyProducts(products);
 
-    this.setState({
-      products: productsBackupAux,
-      productsBackup: JSON.parse(JSON.stringify(this.state.productsBackupPorRelevancia)),
-      criteria: 'relevancia'
-    });
-  }
+		productsBackupAux.sort(menorPrecio);
+		productsAux.sort(menorPrecio);
 
-  sortMenorPrecio(){
-    const menorPrecio = function(a,b) {
-      if (a.price < b.price)  return -1;
-      if (a.price > b.price)  return 1;
-      return 0;
-    }
-    let productsBackupAux = JSON.parse(JSON.stringify(this.state.productsBackup));
-    let productsAux = JSON.parse(JSON.stringify(this.state.products));
+		this.setState({
+			products: productsAux,
+			productsBackup: productsBackupAux,
+			criteria: 'menor-precio'
+		});
+	}
 
-    productsBackupAux.sort(menorPrecio);
-    productsAux.sort(menorPrecio);
+	sortMayorPrecio = () => {
+		const { productsBackup, products } = this.state;
+		const mayorPrecio = function(a,b) {
+			if (a.price > b.price)  return -1;
+			if (a.price < b.price)  return 1;
+			return 0;
+		}
+		let productsBackupAux = copyProducts(productsBackup),
+			productsAux = copyProducts(products);
 
-    this.setState({
-      products: productsAux,
-      productsBackup: productsBackupAux,
-      criteria: 'menor-precio'
-    });
-  }
+		productsBackupAux.sort(mayorPrecio);
+		productsAux.sort(mayorPrecio);
 
-  sortMayorPrecio(){
-    const mayorPrecio = function(a,b) {
-      if (a.price > b.price)  return -1;
-      if (a.price < b.price)  return 1;
-      return 0;
-    }
-    let productsBackupAux = JSON.parse(JSON.stringify(this.state.productsBackup)),
-        productsAux = JSON.parse(JSON.stringify(this.state.products));
-
-    productsBackupAux.sort(mayorPrecio);
-    productsAux.sort(mayorPrecio);
-
-    this.setState({
-      products: productsAux,
-      productsBackup: productsBackupAux,
-      criteria: 'mayor-precio'
-    });
-  }
+		this.setState({
+			products: productsAux,
+			productsBackup: productsBackupAux,
+			criteria: 'mayor-precio'
+		});
+	}
 
 	filterAll = () => {
 		const { nuevoVsUsado, productsBackup } = this.state;
@@ -103,7 +101,7 @@ class App extends Component {
 		const porPrecioBase = product => product.price > parseFloat(precioBase);
 		const porPrecioTope = product => product.price < parseFloat(precioTope);
 		const porNuevoVsUsado = product => product.condition === nuevoVsUsado;
-		let updatedProducts = JSON.parse(JSON.stringify(productsBackup));
+		let updatedProducts = copyProducts(productsBackup);
 
 		if(palabraClave){
 			const palabraClaveBackup = palabraClave;
