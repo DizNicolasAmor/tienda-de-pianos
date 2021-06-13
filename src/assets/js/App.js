@@ -4,7 +4,9 @@ import Header from './Header.js';
 import Filter from './Filter.js';
 import Products from './Products.js';
 import Footer from './Footer.js';
-import { copyProducts } from './utils';
+import * as _cloneDeep from 'lodash/cloneDeep';
+
+const copyProducts = productsArray => productsArray.map(obj => _cloneDeep(obj));
 
 class App extends Component {
 	constructor(props) {

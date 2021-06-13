@@ -1,5 +1,5 @@
 import React from 'react';
-import { truncateString } from './utils';
+import * as _truncate from 'lodash/truncate';
 
 const Product = ({ image, price, title }) => (
   <div className="subcontainer">
@@ -11,7 +11,7 @@ const Product = ({ image, price, title }) => (
       <div className="cursor-pointer text-center font-weight-bold my-3">
         $ {price}
       </div>
-      <div title={title}>{truncateString(title, 60)}</div>
+      <div title={title}>{_truncate(title, { length: 60 })}</div>
     </div>
   </div>
 );
