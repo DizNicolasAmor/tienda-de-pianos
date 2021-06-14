@@ -2,11 +2,11 @@ import React from 'react';
 import {Button} from 'react-bootstrap';
 
 const Filter = ({
-	clickNuevo,
-	clickUsado,
+	clickOnNew,
+	clickOnUsed,
 	criteria,
 	filterAll,
-	nuevoVsUsado,
+	condition,
 	sortRelevancia,
 	sortMenorPrecio,
 	sortMayorPrecio
@@ -73,17 +73,17 @@ const Filter = ({
 			<div className="m-4 text-center">
 				<Button
 					aria-label="Filtrar por producto Nuevo"
-					bsStyle={nuevoVsUsado === 'nuevo' ? "info" : "light"}
+					bsStyle={condition === 'new' ? "info" : "light"}
 					className="btn-sort"
-					onClick={clickNuevo}
+					onClick={clickOnNew}
 				>
 					NUEVO
 				</Button>
 				<Button
 					aria-label="Filtrar por producto Usado"
-					bsStyle={nuevoVsUsado === 'usado' ? "info" : "light"}
+					bsStyle={condition === 'used' ? "info" : "light"}
 					className="btn-sort"
-					onClick={clickUsado}
+					onClick={clickOnUsed}
 				>
 					USADO
 				</Button>

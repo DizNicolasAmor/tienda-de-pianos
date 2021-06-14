@@ -16,7 +16,7 @@ class App extends Component {
 			productsBackup: [],
 			productsBackupPorRelevancia: [],
 			criteria: 'relevancia',
-			nuevoVsUsado: ''
+			condition: ''
 		};
 	}
 
@@ -94,7 +94,7 @@ class App extends Component {
 	}
 
 	filterAll = () => {
-		const { nuevoVsUsado, productsBackup } = this.state;
+		const { condition, productsBackup } = this.state;
 		const precioBase = document.getElementById('precio-base').value;
 		const precioTope = document.getElementById('precio-tope').value; 
 		let palabraClave = document.getElementById('palabra-clave').value;
@@ -102,7 +102,7 @@ class App extends Component {
 		const porPalabraClave = product => product.title.toLowerCase().search(palabraClave.toLowerCase()) !== -1;
 		const porPrecioBase = product => product.price > parseFloat(precioBase);
 		const porPrecioTope = product => product.price < parseFloat(precioTope);
-		const porNuevoVsUsado = product => product.condition === nuevoVsUsado;
+		const byCondition = product => product.condition === condition;
 		let updatedProducts = copyProducts(productsBackup);
 
 		if(palabraClave){
@@ -119,15 +119,15 @@ class App extends Component {
 
 		if(precioBase){ updatedProducts = updatedProducts.filter(porPrecioBase) }
 		if(precioTope){ updatedProducts = updatedProducts.filter(porPrecioTope) }
-		if(nuevoVsUsado){ updatedProducts = updatedProducts.filter(porNuevoVsUsado) }
+		if(condition){ updatedProducts = updatedProducts.filter(byCondition) }
 
 		this.setState({ products: updatedProducts });
 	}
 
-	clickNuevoVsUsado = str => {
-		const { nuevoVsUsado } = this.state;
-		const nuevoEstado = nuevoVsUsado === str ? '' : str;
-		this.setState({ nuevoVsUsado: nuevoEstado }, () => { this.filterAll() });
+	handleChangeCondition = str => {
+		const { condition } = this.state;
+		const newCondition = condition === str ? '' : str;
+		this.setState({ condition: newCondition }, () => { this.filterAll() });
 	}
 
 	componentDidMount(){
@@ -145,9 +145,9 @@ class App extends Component {
 						sortMenorPrecio={this.sortMenorPrecio}
 						sortMayorPrecio={this.sortMayorPrecio}
 						filterAll={this.filterAll}
-						nuevoVsUsado={this.state.nuevoVsUsado}
-						clickNuevo={() => this.clickNuevoVsUsado('nuevo')}
-						clickUsado={() => this.clickNuevoVsUsado('usado')}
+						condition={this.state.condition}
+						clickOnNew={() => this.handleChangeCondition('new')}
+						clickOnUsed={() => this.handleChangeCondition('used')}
 					/>
 					<Products products={this.state.products} />
 					<Footer />
