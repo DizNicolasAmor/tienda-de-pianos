@@ -6,10 +6,10 @@
     "axios": "^0.21.2",
     "bootstrap": "^3.4.1",
     "lodash": "^4.17.21",
-    "react": "^16.2.0",
+    "react": "^16.14.0",
     "react-bootstrap": "^0.32.0",
     "react-bootstrap-navbar": "^1.1.0",
-    "react-dom": "^16.2.0",
+    "react-dom": "^16.14.0",
     "react-scripts": "5.0.1",
     "sass": "^1.33.0",
     "simple-react-bootstrap": "^0.2.7"
